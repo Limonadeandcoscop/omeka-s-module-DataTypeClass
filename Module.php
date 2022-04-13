@@ -30,9 +30,9 @@
 namespace DataTypeClass;
 
 use Omeka\Module\AbstractModule;
-use Zend\EventManager\Event;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class Module extends AbstractModule
 {
@@ -59,12 +59,30 @@ class Module extends AbstractModule
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
         $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.add.after',
+            [$this, 'renderAssets']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.edit.after',
+            [$this, 'renderAssets']
+        );		
+        $sharedEventManager->attach(
             'Omeka\DataType\Manager',
             'service.registered_names',
             [$this, 'addResourcesClassesServices']
         );
     }
 
+    public function renderAssets(Event $event)
+    {
+        $view = $event->getTarget();
+        $assetUrl = $view->plugin('assetUrl');
+        $view->headScript()
+            ->appendFile($assetUrl('js/data-type-class.js', 'DataTypeTypedResource'));
+    }
+	
     public function addResourcesClassesServices(Event $event)
     {
         $resourcesClasses = $this->getServiceLocator()->get('Omeka\ApiManager')->search('resource_classes')->getContent();
