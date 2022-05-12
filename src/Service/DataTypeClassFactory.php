@@ -31,7 +31,7 @@ namespace DataTypeClass\Service;
 
 use DataTypeClass\DataType\DataTypeClass;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 class DataTypeClassFactory implements AbstractFactoryInterface
 {

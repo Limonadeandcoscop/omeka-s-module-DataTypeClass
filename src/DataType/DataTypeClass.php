@@ -29,9 +29,9 @@
 
 namespace DataTypeClass\DataType;
 
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\ResourceClassRepresentation;
-use Zend\Form\Form;
+use Laminas\Form\Form;
 use Omeka\DataType\Resource\Item;
 
 class DataTypeClass extends Item
@@ -51,6 +51,11 @@ class DataTypeClass extends Item
         $this->resourceClass = $resourceClass;
     }
 
+    public function getName()
+    {
+        return 'resource:item#' .$this->resourceClass->term();
+    }
+	
     public function getLabel()
     {
         return $this->resourceClass->term();
